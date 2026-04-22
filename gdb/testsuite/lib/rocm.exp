@@ -577,6 +577,18 @@ proc enable_alu_exception {excp_name} {
 
 gdb_caching_proc compiler_dwarf_language {} {
     global rocm_path
+    #####################################
+    verbose -log "NEEDLE"
+    catch {exec find -L "/opt" -type f -iname "*dwarfdump*" 2>/dev/null} out
+    verbose -log "here comes the find's output"
+    verbose -log "$out"
+    catch {exec find /usr /bin /sbin /var /lib /lib64 -type f -iname "*dwarfdump*" 2>/dev/null} out
+    verbose -log "$out"
+
+    catch {exec env 2>/dev/null} out
+    verbose -log "here comes the env's output"
+    verbose -log "$out"
+    #####################################
     if {![gdb_simple_compile check_my_lang {
 	    int foo (void) { return 42; }
 	  } object {hip}]} {
